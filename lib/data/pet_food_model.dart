@@ -1,10 +1,10 @@
 class PetFoodModel {
-  int id;
-  int dogId;
-  String name;
-  int max;
-  int daily;
-  DateTime startDate;
+  int? id;
+  int? dogId;
+  String? name;
+  int? max;
+  int? daily;
+  DateTime? startDate;
 
   PetFoodModel.fromMap(dynamic obj) {
     id = obj['id'];

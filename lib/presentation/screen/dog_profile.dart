@@ -6,7 +6,7 @@ import 'package:my_dog/data/database_helper.dart';
 import 'package:my_dog/data/dog_model.dart';
 
 class DogProfileScreen extends StatefulWidget {
-  const DogProfileScreen();
+  const DogProfileScreen({super.key});
 
   @override
   _DogProfileScreenState createState() => _DogProfileScreenState();
@@ -15,13 +15,13 @@ class DogProfileScreen extends StatefulWidget {
 enum DogSex { male, female }
 
 class _DogProfileScreenState extends State<DogProfileScreen> {
-  DatabaseHelper database;
+  DatabaseHelper? database;
   final _formKey = GlobalKey<FormState>();
-  File _image;
-  DateTime birthDate;
-  String name;
-  DogSex sex = DogSex.male;
-  String city;
+  File? _image;
+  DateTime? birthDate;
+  String? name;
+  DogSex? sex = DogSex.male;
+  String? city;
 
   @override
   void initState() {
@@ -30,8 +30,9 @@ class _DogProfileScreenState extends State<DogProfileScreen> {
   }
 
   Future _getImage() async {
+    final imagePicker = ImagePicker();
     final pickedImage =
-        await ImagePicker.pickImage(source: ImageSource.gallery);
+        await imagePicker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
         _image = File(pickedImage.path);
@@ -40,7 +41,7 @@ class _DogProfileScreenState extends State<DogProfileScreen> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 30),
@@ -85,7 +86,7 @@ class _DogProfileScreenState extends State<DogProfileScreen> {
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.file(
-                                  _image,
+                                  _image!,
                                   fit: BoxFit.contain,
                                 ),
                               )
@@ -101,7 +102,7 @@ class _DogProfileScreenState extends State<DogProfileScreen> {
                   decoration:
                       const InputDecoration(hintText: 'Wprowadź imię psa'),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Wprowadź imię psa';
                     }
                     return null;
@@ -115,7 +116,7 @@ class _DogProfileScreenState extends State<DogProfileScreen> {
                   decoration:
                       const InputDecoration(hintText: 'Miejsce zamieszkania'),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Miejsce zamieszkania';
                     }
                     return null;
@@ -134,7 +135,7 @@ class _DogProfileScreenState extends State<DogProfileScreen> {
                           leading: Radio<DogSex>(
                             value: DogSex.male,
                             groupValue: sex,
-                            onChanged: (DogSex value) {
+                            onChanged: (DogSex? value) {
                               setState(() {
                                 sex = value;
                               });
@@ -146,7 +147,7 @@ class _DogProfileScreenState extends State<DogProfileScreen> {
                           leading: Radio<DogSex>(
                             value: DogSex.female,
                             groupValue: sex,
-                            onChanged: (DogSex value) {
+                            onChanged: (DogSex? value) {
                               setState(() {
                                 sex = value;
                               });
@@ -175,7 +176,7 @@ class _DogProfileScreenState extends State<DogProfileScreen> {
                   child: ElevatedButton(
                     child: const Text('Zapisz profil psa'),
                     onPressed: () {
-                      if (_formKey.currentState.validate() &&
+                      if (_formKey.currentState!.validate() &&
                           birthDate != null) {
                         database
                             ?.insertDog(DogModel(

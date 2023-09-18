@@ -10,26 +10,26 @@ import 'package:my_dog/shared/utility.dart';
 
 class DogDashboardScreen extends StatefulWidget {
   final DogModel dog;
-  const DogDashboardScreen({this.dog});
+  const DogDashboardScreen({super.key, required this.dog});
 
   @override
   _DogDashboardScreenState createState() => _DogDashboardScreenState();
 }
 
 class _DogDashboardScreenState extends State<DogDashboardScreen> {
-  DatabaseHelper database;
-  PetFoodModel pf;
+  DatabaseHelper? database;
+  PetFoodModel? pf;
   @override
   void initState() {
     super.initState();
-    DatabaseHelper.instance.getPetFood(widget.dog.id).then((value) => setState(() {
+    DatabaseHelper.instance.getPetFood(widget.dog.id!).then((value) => setState(() {
       pf = value;
     }));
   }
 
   String getCurrentPetFood(PetFoodModel pf) {
-    int diffrence = DateTime.now().difference(pf.startDate).inDays;
-    return (diffrence * pf.daily - pf.max).abs().toString();
+    int diffrence = DateTime.now().difference(pf.startDate!).inDays;
+    return (diffrence * pf.daily! - pf.max!).abs().toString();
   }
 
   @override
@@ -38,19 +38,27 @@ class _DogDashboardScreenState extends State<DogDashboardScreen> {
         body: Padding(
       padding: const EdgeInsets.all(8.0),
       child: SafeArea(
-        child: StaggeredGridView.count(
+        child: StaggeredGrid.count(
           crossAxisCount: 2,
           crossAxisSpacing: 10,
+          axisDirection: AxisDirection.down,
           mainAxisSpacing: 10,
-          staggeredTiles: [
-            StaggeredTile.extent(2, 150),
-            StaggeredTile.extent(1, 180),
-            StaggeredTile.extent(1, 180),
-          ],
           children: [
-            buildImage(widget.dog),
-            buildPetFood(widget.dog),
-            buildCalendar(widget.dog),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1,
+              child: buildImage(widget.dog),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1,
+              child: buildPetFood(widget.dog),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1,
+              child: buildCalendar(widget.dog),
+            ),
           ],
         ),
       ),
@@ -86,8 +94,8 @@ class _DogDashboardScreenState extends State<DogDashboardScreen> {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
-                      fontSize: 18.0)),
-              pf != null ? Text('${getCurrentPetFood(pf)}/${pf?.max} gram',
+                      fontSize: 20.0)),
+              pf != null ? Text('${getCurrentPetFood(pf!)}/${pf?.max} gram',
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w400,
@@ -118,7 +126,7 @@ class _DogDashboardScreenState extends State<DogDashboardScreen> {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
-                      fontSize: 18.0)),
+                      fontSize: 20.0)),
             ]),
       ),
       () => Navigator.pushNamed(context, '/calendar', arguments: dog)
@@ -127,6 +135,7 @@ class _DogDashboardScreenState extends State<DogDashboardScreen> {
 
   Widget buildImage(DogModel dog) {
     return Container(
+      height: 150,
       child: Card(
         color: Color.fromRGBO(233, 101, 97, 0.8),
         shape: RoundedRectangleBorder(
@@ -139,7 +148,7 @@ class _DogDashboardScreenState extends State<DogDashboardScreen> {
                 child: ClipRRect(
                     borderRadius: BorderRadius.circular(10.0),
                     child: Image.file(
-                      File(dog.image),
+                      File(dog.image!),
                       fit: BoxFit.cover,
                     ))),
             Expanded(
@@ -149,11 +158,11 @@ class _DogDashboardScreenState extends State<DogDashboardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    buildTextRow(dog.name, MdiIcons.dog),
-                    buildTextRow(dog.sex, MdiIcons.genderMaleFemale),
+                    buildTextRow(dog.name!, MdiIcons.dog),
+                    buildTextRow(dog.sex!, MdiIcons.genderMaleFemale),
                     buildTextRow(
                         Utility.calculateYear(dog.date), MdiIcons.cake),
-                    buildTextRow(dog.city, Icons.location_on)
+                    buildTextRow(dog.city!, Icons.location_on)
                   ],
                 ),
               ),

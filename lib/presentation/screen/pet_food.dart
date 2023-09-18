@@ -6,26 +6,26 @@ import 'package:my_dog/data/pet_food_model.dart';
 
 class PetFoodScreen extends StatefulWidget {
   final DogModel dog;
-  const PetFoodScreen({this.dog});
+  const PetFoodScreen({super.key, required this.dog});
 
   @override
   _PetFoodScreenState createState() => _PetFoodScreenState();
 }
 
 class _PetFoodScreenState extends State<PetFoodScreen> {
-  DatabaseHelper database;
+  DatabaseHelper? database;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController name = TextEditingController();
   final TextEditingController max = TextEditingController();
   final TextEditingController daily = TextEditingController();
-  DateTime startDate;
+  DateTime? startDate;
 
   @override
   void initState() {
     super.initState();
     database = DatabaseHelper.instance;
-    DatabaseHelper.instance.getPetFood(widget.dog.id).then((value) => setState(() {
-      name.text = value.name;
+    DatabaseHelper.instance.getPetFood(widget.dog.id!).then((value) => setState(() {
+      name.text = value.name!;
       max.text = value.max.toString();
       daily.text = value.daily.toString();
       startDate = value.startDate;
@@ -33,7 +33,7 @@ class _PetFoodScreenState extends State<PetFoodScreen> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+    final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 30),
@@ -65,7 +65,7 @@ class _PetFoodScreenState extends State<PetFoodScreen> {
                   decoration:const InputDecoration(hintText: 'Wprowadź nazwę karmy'),
                   controller: name,
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Wprowadź nazwę karmy';
                     }
                     return null;
@@ -79,7 +79,7 @@ class _PetFoodScreenState extends State<PetFoodScreen> {
                   decoration:
                       const InputDecoration(hintText: 'Waga produktu', suffixText: 'gram'),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Waga produktu';
                     }
                     return null;
@@ -93,7 +93,7 @@ class _PetFoodScreenState extends State<PetFoodScreen> {
                   decoration:
                       const InputDecoration(hintText: 'Dzienna ilość pokarmu', suffixText: 'gram'),
                   validator: (value) {
-                    if (value.isEmpty) {
+                    if (value!.isEmpty) {
                       return 'Dzienna ilość pokarmu';
                     }
                     return null;
@@ -117,7 +117,7 @@ class _PetFoodScreenState extends State<PetFoodScreen> {
                   child: ElevatedButton(
                     child: const Text('Uzupełnij karmę'),
                     onPressed: () {
-                      if (_formKey.currentState.validate()) {
+                      if (_formKey.currentState!.validate()) {
                         database
                             ?.inserPetFood(PetFoodModel(
                                 dogId: widget.dog.id,

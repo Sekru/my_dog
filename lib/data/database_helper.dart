@@ -8,15 +8,15 @@ import 'package:sqflite/sqflite.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._();
-  static Database _database;
+  static Database? _database;
 
   DatabaseHelper._();
 
   Future<Database> get database async {
-    if (_database != null) return _database;
+    if (_database != null) return _database!;
 
     _database = await _initDatabase();
-    return _database;
+    return _database!;
   }
 
   Future<Database> _initDatabase() async {
@@ -40,22 +40,22 @@ class DatabaseHelper {
   }
 
   Future<int> insertDog(DogModel dogData) async {
-    Database db = await database;
+    Database? db = await database;
     return await db.insert('dogs', dogData.toMap());
   }
 
   Future<List<DogModel>> getDogs() async {
-    Database db = await database;
+    Database? db = await database;
     return (await db.query('dogs')).map((x) => DogModel.fromMap(x)).toList();
   }
 
   Future<int> inserPetFood(PetFoodModel pf) async {
-    Database db = await database;
+    Database? db = await database;
     return await db.insert('petfood', pf.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<PetFoodModel> getPetFood(int id) async {
-    Database db = await database;
+    Database? db = await database;
     return (await db.query('petfood', where: 'dogId = ?', whereArgs: [id]))
       .map((e) => PetFoodModel.fromMap(e)).first;
   }

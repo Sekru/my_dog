@@ -11,7 +11,7 @@ void main() {
 }
 
 class App extends StatefulWidget {
-  const App();
+  const App({super.key});
 
   @override
   _AppState createState() => _AppState();
@@ -21,17 +21,9 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Color.fromRGBO(233, 101, 97, 1),
-        buttonColor: Color.fromRGBO(233, 101, 97, 0.8),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            primary: Color.fromRGBO(233, 101, 97, 0.8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-        ),
+      theme: ThemeData.from(
+        colorScheme: ColorScheme.fromSeed(seedColor: Color.fromRGBO(233, 101, 97, 1)),
+        useMaterial3: true,
       ),
       routes: {
         '/calendar': (context) => CalendarScreen(),

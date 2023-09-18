@@ -4,7 +4,7 @@ import 'package:my_dog/presentation/screen/calendar.dart';
 import 'package:my_dog/presentation/screen/dog_list.dart';
 
 class NavigationScreen extends StatefulWidget {
-  const NavigationScreen();
+  const NavigationScreen({super.key});
 
   @override
   NavigationPage createState() => NavigationPage();

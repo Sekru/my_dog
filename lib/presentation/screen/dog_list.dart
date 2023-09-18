@@ -7,14 +7,14 @@ import 'package:my_dog/data/dog_model.dart';
 import 'package:my_dog/shared/utility.dart';
 
 class DogListScreen extends StatefulWidget {
-  const DogListScreen();
+  const DogListScreen({super.key});
 
   @override
   _DogListScreenState createState() => _DogListScreenState();
 }
 
 class _DogListScreenState extends State<DogListScreen> {
-  DatabaseHelper database;
+  DatabaseHelper? database;
   List<DogModel> dogs = [];
 
   @override
@@ -56,7 +56,7 @@ class _DogListScreenState extends State<DogListScreen> {
                               child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10.0),
                                   child: Image.file(
-                                    File(dog.image),
+                                    File(dog.image!),
                                     fit: BoxFit.cover,
                                   ))),
                           Expanded(
@@ -66,13 +66,13 @@ class _DogListScreenState extends State<DogListScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  buildTextRow(dog.name, MdiIcons.dog),
+                                  buildTextRow(dog.name!, MdiIcons.dog),
                                   buildTextRow(
-                                      dog.sex, MdiIcons.genderMaleFemale),
+                                      dog.sex!, MdiIcons.genderMaleFemale),
                                   buildTextRow(
                                       Utility.calculateYear(dog.date),
                                       MdiIcons.cake),
-                                  buildTextRow(dog.city, Icons.location_on)
+                                  buildTextRow(dog.city!, Icons.location_on)
                                 ],
                               ),
                             ),

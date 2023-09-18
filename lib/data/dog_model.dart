@@ -1,10 +1,10 @@
 class DogModel {
-  int id;
-  String image;
-  String name;
-  String city;
-  String sex;
-  DateTime date;
+  int? id;
+  String? image;
+  String? name;
+  String? city;
+  String? sex;
+  DateTime? date;
 
   DogModel.fromMap(dynamic obj) {
     id = obj['id'];
